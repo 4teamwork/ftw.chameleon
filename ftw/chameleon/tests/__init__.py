@@ -32,13 +32,45 @@ class FunctionalTestCase(TestCase):
         self.reload_config()
 
     def reload_config(self):
-        import chameleon.config
+        import chameleon
         reload(chameleon.config)
+        reload(chameleon.compiler)
+        reload(chameleon.exc)
+        reload(chameleon.template)
         import ftw.chameleon.config
         reload(ftw.chameleon.config)
 
-    def trigger_foo_template_cooking(self):
-        class FooView(BrowserView):
+    def build_view(self, template_path='templates/foo.pt'):
+        class View(BrowserView):
+            template = ViewPageTemplateFile(template_path)
+
             def __call__(self):
-                return ViewPageTemplateFile('templates/foo.pt')(self)
-        return FooView(self.portal, self.request)()
+                return self.template(self)
+
+            def touch_template(self):
+                mtime = os.path.getmtime(self.template.filename)
+                mtime += 1
+                os.utime(self.template.filename, (mtime, mtime))
+
+        return View(self.portal, self.request)
+
+    def trigger_foo_template_cooking(self):
+        return self.build_view()()
+
+    def register_template_compilation_subscriber(self):
+        event_list = []
+
+        def subscriber(event):
+            event_list.append(event)
+
+        globals()['_event_subscriber'] = subscriber
+        self.load_zcml_string('''
+            <configure xmlns="http://namespaces.zope.org/zope">
+              <subscriber
+                for="ftw.chameleon.interfaces.ICompilingTemplateEvent"
+                handler="{}._event_subscriber"
+                />
+            </configure>
+            '''.format(FunctionalTestCase.__module__))
+        del globals()['_event_subscriber']
+        return event_list

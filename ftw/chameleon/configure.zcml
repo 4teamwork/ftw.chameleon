@@ -17,4 +17,12 @@
         handler=".cook_warning.template_compiled"
         />
 
+    <monkey:patch
+        description="Let zope.pagetemplate support CHAMELEON_RELOAD."
+        class="zope.pagetemplate.pagetemplatefile.PageTemplateFile"
+        original="_cook_check"
+        replacement=".patches.zope_PageTemplateFile_cook_check"
+        preserveOriginal="True"
+        />
+
 </configure>

@@ -1,6 +1,15 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
+    xmlns:monkey="http://namespaces.plone.org/monkey"
     i18n_domain="ftw.chameleon">
+
+    <monkey:patch
+        description="Fire event when chameleon compiles."
+        class="chameleon.template.BaseTemplate"
+        original="_compile"
+        replacement=".patches.chameleon_BaseTemplate_compile"
+        preserveOriginal="True"
+        />
 
 </configure>

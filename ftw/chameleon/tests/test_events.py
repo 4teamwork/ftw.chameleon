@@ -1,7 +1,5 @@
 from chameleon.template import BaseTemplate
 from ftw.chameleon.tests import FunctionalTestCase
-from Products.Five.browser import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 import os
 
 
@@ -23,14 +21,9 @@ class TestCompilingTemplateEvent(FunctionalTestCase):
             />
         </configure>
         '''.format(type(self).__module__))
-        template = ViewPageTemplateFile('templates/foo.pt')
-
-        class FooView(BrowserView):
-            def __call__(self):
-                return template(self)
 
         self.assertEquals('<h1> Hello World</h1>',
-                          FooView(self.portal, self.request)().strip())
+                          self.trigger_foo_template_cooking().strip())
 
         event = EVENTS.pop()
         self.assertEquals('foo.pt', os.path.basename(event.template_path))

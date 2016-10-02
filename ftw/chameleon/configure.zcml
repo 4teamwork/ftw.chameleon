@@ -12,4 +12,9 @@
         preserveOriginal="True"
         />
 
+    <subscriber
+        for="ftw.chameleon.interfaces.ICompilingTemplateEvent"
+        handler=".cook_warning.template_compiled"
+        />
+
 </configure>

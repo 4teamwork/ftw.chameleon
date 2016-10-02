@@ -8,6 +8,7 @@ tests_require = [
     'ftw.testing',
     'plone.app.testing',
     'plone.testing',
+    'testfixtures',
 ]
 
 extras_require = {

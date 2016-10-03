@@ -118,7 +118,7 @@ Development
 1. Fork this repo
 2. Clone your fork
 3. Shell: ``ln -s development.cfg buildout.cfg``
-4. Shell: ``python boostrap.py``
+4. Shell: ``python bootstrap.py``
 5. Shell: ``bin/buildout``
 
 Run ``bin/test`` to test your changes.

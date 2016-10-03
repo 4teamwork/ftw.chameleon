@@ -1,6 +1,7 @@
 from ftw.chameleon import config
 from ftw.chameleon.progresslogger import ProgressLogger
 from ftw.chameleon.utils import get_subclasses
+from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from zope.pagetemplate.pagetemplate import PageTemplate
 import gc
 import logging
@@ -8,7 +9,8 @@ import threading
 
 
 LOG = logging.getLogger('ftw.ptcache')
-CURRENTLY_PRECOOKING = False
+CURRENTLY_PRECOOKING = {}
+SKINS_PRECOOKED_FOR_SITES = []
 
 
 def eager_load_on_startup(event):
@@ -17,7 +19,7 @@ def eager_load_on_startup(event):
 
 
 def precook_templates():
-    globals()['CURRENTLY_PRECOOKING'] = True
+    CURRENTLY_PRECOOKING['precook_templates'] = True
     try:
         ptclasses = tuple(get_subclasses(PageTemplate))
         templates = filter(lambda obj: isinstance(obj, ptclasses),
@@ -34,4 +36,44 @@ def precook_templates():
                 LOG.exception(exc)
 
     finally:
-        globals()['CURRENTLY_PRECOOKING'] = False
+        CURRENTLY_PRECOOKING.pop('precook_templates', None)
+
+
+def eager_load_portal_skins(event):
+    if not config.EAGER_PARSING:
+        return
+
+    for site in filter(IPloneSiteRoot.providedBy, event.request.PARENTS):
+        site_path = '/'.join(site.getPhysicalPath())
+        if site_path in SKINS_PRECOOKED_FOR_SITES:
+            continue
+
+        SKINS_PRECOOKED_FOR_SITES.append(site_path)
+        precooking_key = 'portal_skins:{}'.format(site_path)
+        CURRENTLY_PRECOOKING[precooking_key] = True
+        try:
+            eager_load_portal_skins_in_site(site)
+        finally:
+            CURRENTLY_PRECOOKING.pop(precooking_key, None)
+
+
+def eager_load_portal_skins_in_site(site):
+    templates = tuple(find_skins_templates(site.portal_skins))
+    msg = 'Pre-cooking {} templates.'.format(len(templates))
+    for template in ProgressLogger(msg, templates, logger=LOG):
+        try:
+            template._cook_check()
+        except Exception, exc:
+            LOG.exception(exc)
+
+
+def find_skins_templates(obj):
+    if hasattr(obj, '_cook_check'):
+        yield obj
+
+    if not hasattr(obj, 'objectValues'):
+        return
+
+    for child in obj.objectValues():
+        for template in find_skins_templates(child):
+            yield template

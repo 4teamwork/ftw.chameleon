@@ -9,6 +9,11 @@
         handler=".precook.eager_load_on_startup"
         />
 
+    <subscriber
+        for="ZPublisher.interfaces.IPubSuccess"
+        handler=".precook.eager_load_portal_skins"
+        />
+
     <monkey:patch
         description="Fire event when chameleon compiles."
         class="chameleon.template.BaseTemplate"

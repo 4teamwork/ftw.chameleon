@@ -34,6 +34,9 @@ Enhancements
 - Log warnings or exceptions when templates are compiled unexpectedly.
   This helps to pin-point problems with templates which are not cacheable.
 
+- When ``CHAMELEON_EAGER`` is enabled, the templates in ``portal_skins`` will be
+  cooked after the first request on the Plone site.
+
 
 Compatibility
 =============

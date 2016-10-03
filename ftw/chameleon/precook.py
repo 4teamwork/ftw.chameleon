@@ -59,7 +59,7 @@ def eager_load_portal_skins(event):
 
 def eager_load_portal_skins_in_site(site):
     templates = tuple(find_skins_templates(site.portal_skins))
-    msg = 'Pre-cooking {} templates.'.format(len(templates))
+    msg = 'Pre-cooking portal_skins: {} templates.'.format(len(templates))
     for template in ProgressLogger(msg, templates, logger=LOG):
         try:
             template._cook_check()

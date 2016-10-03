@@ -1,5 +1,6 @@
 from ftw.chameleon.precook import eager_load_portal_skins
 from ftw.chameleon.precook import precook_templates
+from ftw.chameleon.precook import SKINS_PRECOOKED_FOR_SITES
 from ftw.chameleon.tests import FunctionalTestCase
 import os
 
@@ -15,6 +16,7 @@ class TestPrecookTemplates(FunctionalTestCase):
     def test_01_precooks_portal_skins_after_first_access(self):
         os.environ['CHAMELEON_EAGER'] = 'true'
         self.reload_config()
+        SKINS_PRECOOKED_FOR_SITES[:] = []
         sendto_template = self.portal.portal_skins.plone_templates.sendto_template
         eager_load_portal_skins(Stub(request=Stub(PARENTS=self.portal.aq_chain)))
         self.assertTrue(sendto_template._v_program,

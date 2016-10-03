@@ -1,9 +1,15 @@
+from ftw.chameleon import precook
 from ftw.chameleon.tests import FunctionalTestCase
 from testfixtures import LogCapture
 import os
 
 
 class TestCookWarning(FunctionalTestCase):
+
+    def setUp(self):
+        super(TestCookWarning, self).setUp()
+        precook.SKINS_PRECOOKED_FOR_SITES[:] = [
+            '/'.join(self.portal.getPhysicalPath())]
 
     def test_warning_logged_in_eager_mode(self):
         os.environ['CHAMELEON_EAGER'] = 'true'
@@ -53,6 +59,11 @@ class TestCookWarning(FunctionalTestCase):
 
 
 class TestCookException(FunctionalTestCase):
+
+    def setUp(self):
+        super(TestCookException, self).setUp()
+        precook.SKINS_PRECOOKED_FOR_SITES[:] = [
+            '/'.join(self.portal.getPhysicalPath())]
 
     def test_exception_logged_in_eager_mode(self):
         os.environ['CHAMELEON_EAGER'] = 'true'

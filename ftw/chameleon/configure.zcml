@@ -4,6 +4,11 @@
     xmlns:monkey="http://namespaces.plone.org/monkey"
     i18n_domain="ftw.chameleon">
 
+    <subscriber
+        for="zope.processlifetime.IDatabaseOpenedWithRoot"
+        handler=".precook.eager_load_on_startup"
+        />
+
     <monkey:patch
         description="Fire event when chameleon compiles."
         class="chameleon.template.BaseTemplate"

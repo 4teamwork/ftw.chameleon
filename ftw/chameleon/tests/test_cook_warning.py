@@ -7,7 +7,7 @@ class TestCookWarning(FunctionalTestCase):
 
     def test_warning_logged_in_eager_mode(self):
         os.environ['CHAMELEON_EAGER'] = 'true'
-        os.environ['CHAMELEON_RECOOK_WARNING'] = 'true'
+        os.environ['FTW_CHAMELEON_RECOOK_WARNING'] = 'true'
         self.reload_config()
 
         with LogCapture() as log:
@@ -22,7 +22,7 @@ class TestCookWarning(FunctionalTestCase):
 
     def test_no_warning_if_warning_disabled(self):
         os.environ['CHAMELEON_EAGER'] = 'true'
-        os.environ['CHAMELEON_RECOOK_WARNING'] = 'false'
+        os.environ['FTW_CHAMELEON_RECOOK_WARNING'] = 'false'
         self.reload_config()
 
         with LogCapture() as log:
@@ -32,7 +32,7 @@ class TestCookWarning(FunctionalTestCase):
 
     def test_no_warning_logged_in_non_eager_mode(self):
         os.environ['CHAMELEON_EAGER'] = 'false'
-        os.environ['CHAMELEON_RECOOK_WARNING'] = 'true'
+        os.environ['FTW_CHAMELEON_RECOOK_WARNING'] = 'true'
         self.reload_config()
 
         with LogCapture() as log:
@@ -43,7 +43,7 @@ class TestCookWarning(FunctionalTestCase):
     def test_no_warning_logged_in_auto_reload_mode(self):
         os.environ['CHAMELEON_EAGER'] = 'true'
         os.environ['CHAMELEON_RELOAD'] = 'true'
-        os.environ['CHAMELEON_RECOOK_WARNING'] = 'true'
+        os.environ['FTW_CHAMELEON_RECOOK_WARNING'] = 'true'
         self.reload_config()
 
         with LogCapture() as log:
@@ -56,7 +56,7 @@ class TestCookException(FunctionalTestCase):
 
     def test_exception_logged_in_eager_mode(self):
         os.environ['CHAMELEON_EAGER'] = 'true'
-        os.environ['CHAMELEON_RECOOK_EXCEPTION'] = 'true'
+        os.environ['FTW_CHAMELEON_RECOOK_EXCEPTION'] = 'true'
         self.reload_config()
 
         with LogCapture() as log:
@@ -71,7 +71,7 @@ class TestCookException(FunctionalTestCase):
 
     def test_no_exception_if_exception_disabled(self):
         os.environ['CHAMELEON_EAGER'] = 'true'
-        os.environ['CHAMELEON_RECOOK_EXCEPTION'] = 'false'
+        os.environ['FTW_CHAMELEON_RECOOK_EXCEPTION'] = 'false'
         self.reload_config()
 
         with LogCapture() as log:
@@ -81,7 +81,7 @@ class TestCookException(FunctionalTestCase):
 
     def test_no_exception_logged_in_non_eager_mode(self):
         os.environ['CHAMELEON_EAGER'] = 'false'
-        os.environ['CHAMELEON_RECOOK_EXCEPTION'] = 'true'
+        os.environ['FTW_CHAMELEON_RECOOK_EXCEPTION'] = 'true'
         self.reload_config()
 
         with LogCapture() as log:
@@ -92,7 +92,7 @@ class TestCookException(FunctionalTestCase):
     def test_no_exception_logged_in_auto_reload_mode(self):
         os.environ['CHAMELEON_EAGER'] = 'true'
         os.environ['CHAMELEON_RELOAD'] = 'true'
-        os.environ['CHAMELEON_RECOOK_EXCEPTION'] = 'true'
+        os.environ['FTW_CHAMELEON_RECOOK_EXCEPTION'] = 'true'
         self.reload_config()
 
         with LogCapture() as log:

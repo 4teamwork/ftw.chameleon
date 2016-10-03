@@ -55,7 +55,7 @@ Buildout example for **production**:
         CHAMELEON_EAGER true
         CHAMELEON_RELOAD false
         CHAMELEON_CACHE ${buildout:directory}/var/chameleon-cache
-        CHAMELEON_RECOOK_WARNING true
+        FTW_CHAMELEON_RECOOK_WARNING true
 
 Buildout example for **development**:
 
@@ -67,6 +67,26 @@ Buildout example for **development**:
     environment-vars +=
         CHAMELEON_RELOAD true
         CHAMELEON_CACHE ${buildout:directory}/var/chameleon-cache
+
+
+Environment variables
+=====================
+
++-----------------------------------+-------------------------------------------+-------------------------+-----------------------------+
+| **Name**                          | **Description**                           | **Values**              | **Recommendation**          |
++-----------------------------------+-------------------------------------------+-------------------------+-----------------------------+
+| ``CHAMELEON_EAGER``               | Parse and comile templates on startup.    | ``true``, ``false``     |``true``                     |
++-----------------------------------+-------------------------------------------+-------------------------+-----------------------------+
+| ``CHAMELEON_RELOAD``              | Reload templates when they have changed.  | ``true``, ``false``     |  ``false``                  |
++-----------------------------------+-------------------------------------------+-------------------------+-----------------------------+
+| ``CHAMELEON_CACHE``               | File system cache.                        | Path to cache directory.| ``.../var/chameleon-cache`` |
++-----------------------------------+-------------------------------------------+-------------------------+-----------------------------+
+| ``FTW_CHAMELEON_RECOOK_WARNING``  | Warn when recooking templates.            | ``true``, ``false``     | ``true``                    |
++-----------------------------------+-------------------------------------------+-------------------------+-----------------------------+
+| ``FTW_CHAMELEON_RECOOK_EXCEPTION``| Exception when recooking templates.       | ``true``, ``false``     | ``true`` when using Sentry. |
++-----------------------------------+-------------------------------------------+-------------------------+-----------------------------+
+
+See also the `Chameleon documentation <https://chameleon.readthedocs.io/en/latest/configuration.html>`_.
 
 
 

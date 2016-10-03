@@ -8,6 +8,7 @@ import threading
 
 
 LOG = logging.getLogger('ftw.ptcache')
+CURRENTLY_PRECOOKING = False
 
 
 def eager_load_on_startup(event):
@@ -16,16 +17,21 @@ def eager_load_on_startup(event):
 
 
 def precook_templates():
-    ptclasses = tuple(get_subclasses(PageTemplate))
-    templates = filter(lambda obj: isinstance(obj, ptclasses),
-                       gc.get_referrers(*ptclasses))
+    globals()['CURRENTLY_PRECOOKING'] = True
+    try:
+        ptclasses = tuple(get_subclasses(PageTemplate))
+        templates = filter(lambda obj: isinstance(obj, ptclasses),
+                           gc.get_referrers(*ptclasses))
 
-    msg = 'Pre-cooking {} templates.'.format(len(templates))
-    for template in ProgressLogger(msg, templates, logger=LOG):
-        if not hasattr(template, '_cook_check'):
-            continue
+        msg = 'Pre-cooking {} templates.'.format(len(templates))
+        for template in ProgressLogger(msg, templates, logger=LOG):
+            if not hasattr(template, '_cook_check'):
+                continue
 
-        try:
-            template._cook_check()
-        except Exception, exc:
-            LOG.exception(exc)
+            try:
+                template._cook_check()
+            except Exception, exc:
+                LOG.exception(exc)
+
+    finally:
+        globals()['CURRENTLY_PRECOOKING'] = False

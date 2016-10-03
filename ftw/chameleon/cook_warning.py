@@ -1,4 +1,5 @@
 from ftw.chameleon import config
+from ftw.chameleon import precook
 from ftw.chameleon.exceptions import TemplateCookedUnexpectedly
 import logging
 
@@ -13,6 +14,10 @@ def template_compiled(event):
 
     if config.AUTO_RELOAD:
         # The warning makes only sense when auto reload is disabled.
+        return
+
+    if precook.CURRENTLY_PRECOOKING:
+        # Do not spam the log when preecoking voluntarily.
         return
 
     msg = ('Template {!r} was unexpectedly cooked'

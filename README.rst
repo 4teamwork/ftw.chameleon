@@ -55,6 +55,7 @@ Buildout example for **production**:
         CHAMELEON_EAGER true
         CHAMELEON_RELOAD false
         CHAMELEON_CACHE ${buildout:directory}/var/chameleon-cache
+        CHAMELEON_RECOOK_WARNING true
 
 Buildout example for **development**:
 

@@ -46,7 +46,7 @@ Installation
 
 Buildout example for **production**:
 
-::
+.. code:: ini
 
     [instance]
     eggs +=
@@ -59,7 +59,7 @@ Buildout example for **production**:
 
 Buildout example for **development**:
 
-::
+.. code:: ini
 
     [instance]
     eggs +=
@@ -67,6 +67,25 @@ Buildout example for **development**:
     environment-vars +=
         CHAMELEON_RELOAD true
         CHAMELEON_CACHE ${buildout:directory}/var/chameleon-cache
+
+
+You need to make sure that the cache-directory exists. This can be done with buildout:
+
+.. code:: ini
+
+    [buildout]
+    parts += chameleon-cache
+
+    [chameleon-cache]
+    directory = ${buildout:directory}/var/chameleon-cache
+    recipe = collective.recipe.shelloutput
+    commands =
+        cmd1 = mkdir -p ${chameleon-cache:directory}
+
+    [instance]
+    environment-vars +=
+        CHAMELEON_CACHE ${chameleon-cache:directory}
+
 
 
 Environment variables

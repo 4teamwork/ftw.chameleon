@@ -19,7 +19,7 @@ extras_require = {
 setup(
     name='ftw.chameleon',
     version=version,
-    description='ftw.chameleon',
+    description='Enhance Chameleon templating engine integration into Plone',
     long_description=open('README.rst').read(),
 
     # Get more strings from

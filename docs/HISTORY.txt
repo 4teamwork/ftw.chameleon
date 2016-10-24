@@ -5,7 +5,7 @@ Changelog
 1.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Precook z3c.jbot registered templates. [jone]
 
 
 1.0.0 (2016-10-03)

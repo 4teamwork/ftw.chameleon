@@ -5,7 +5,17 @@ from Products.CMFPlone.interfaces.siteroot import IPloneSiteRoot
 from zope.pagetemplate.pagetemplate import PageTemplate
 import gc
 import logging
+import pkg_resources
 import threading
+
+
+try:
+    pkg_resources.get_distribution('z3c.jbot')
+except pkg_resources.DistributionNotFound:
+    HAS_Z3C_JBOT = False
+else:
+    HAS_Z3C_JBOT = True
+    import z3c.jbot.patches
 
 
 LOG = logging.getLogger('ftw.ptcache')
@@ -60,7 +70,14 @@ def eager_load_portal_skins(event):
 def eager_load_portal_skins_in_site(site):
     templates = tuple(find_skins_templates(site.portal_skins))
     msg = 'Pre-cooking portal_skins: {} templates.'.format(len(templates))
+
+    if HAS_Z3C_JBOT:
+        templates += tuple(z3c.jbot.patches.registry.values())
+
     for template in ProgressLogger(msg, templates, logger=LOG):
+        if not hasattr(template, '_cook_check'):
+            continue
+
         try:
             template._cook_check()
         except Exception, exc:

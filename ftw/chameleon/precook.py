@@ -18,7 +18,7 @@ else:
     import z3c.jbot.patches
 
 
-LOG = logging.getLogger('ftw.ptcache')
+LOG = logging.getLogger('ftw.chameleon')
 CURRENTLY_PRECOOKING = {}
 SKINS_PRECOOKED_FOR_SITES = []
 

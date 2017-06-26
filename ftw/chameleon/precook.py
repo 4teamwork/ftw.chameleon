@@ -37,6 +37,19 @@ def precook_templates():
 
         msg = 'Pre-cooking {} templates.'.format(len(templates))
         for template in ProgressLogger(msg, templates, logger=LOG):
+            if hasattr(template, '_p_jar'):
+                # Skip persistent templates - portal_skins templates will be
+                # cooked later on the first request, and we don't care about
+                # precooking Zope App level templates.
+                #
+                # This is to avoid attempting to access persistent objects on
+                # a closed ZODB connection after exceptions (ZODB.Connection
+                # Shouldn't load state for [OID] when the connection is closed)
+                #
+                # We're deliberately checking for '_p_jar' instead of
+                # IPersistent.providedBy(template) because the latter also
+                # triggers loading of the object state.
+                continue
             if not hasattr(template, '_cook_check'):
                 continue
 

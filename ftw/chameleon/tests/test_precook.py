@@ -2,6 +2,7 @@ from ftw.chameleon.precook import eager_load_portal_skins
 from ftw.chameleon.precook import precook_templates
 from ftw.chameleon.precook import SKINS_PRECOOKED_FOR_SITES
 from ftw.chameleon.tests import FunctionalTestCase
+from Products.PageTemplates import ZopePageTemplate
 import os
 
 
@@ -27,6 +28,14 @@ class TestPrecookTemplates(FunctionalTestCase):
         self.assertFalse(self.is_view_template_cooked(view))
         precook_templates()
         self.assertTrue(self.is_view_template_cooked(view))
+
+    def test_doesnt_precook_persistent_templates(self):
+        # Using ZopePageTemplate.manage_addPageTemplateForm as an example of
+        # a persistent template here
+        template = ZopePageTemplate.manage_addPageTemplateForm
+        self.assertIsNone(template._v_program)
+        precook_templates()
+        self.assertIsNone(template._v_program)
 
     def is_view_template_cooked(self, view):
         return bool(view.template.im_func._v_program)

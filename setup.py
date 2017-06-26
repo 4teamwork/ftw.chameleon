@@ -6,6 +6,7 @@ tests_require = [
     'ftw.testing',
     'plone.app.testing',
     'testfixtures',
+    'Zope2',
 ]
 
 extras_require = {

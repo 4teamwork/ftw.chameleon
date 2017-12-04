@@ -5,6 +5,8 @@ Changelog
 1.1.3 (unreleased)
 ------------------
 
+- Require five.pt < 3.0. [mbaechtold]
+
 - Append changelog to long description of package [raphael-s]
 
 

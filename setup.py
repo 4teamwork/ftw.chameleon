@@ -47,7 +47,7 @@ setup(
     install_requires=[
         'Plone',
         'collective.monkeypatcher',
-        'five.pt',
+        'five.pt < 3.0',
         'setuptools',
     ],
 

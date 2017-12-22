@@ -18,9 +18,9 @@ class TestPrecookTemplates(FunctionalTestCase):
         os.environ['CHAMELEON_EAGER'] = 'true'
         self.reload_config()
         SKINS_PRECOOKED_FOR_SITES[:] = []
-        sendto_template = self.portal.portal_skins.plone_templates.sendto_template
+        template = self.portal.portal_skins.plone_templates.recently_modified
         eager_load_portal_skins(Stub(request=Stub(PARENTS=self.portal.aq_chain)))
-        self.assertTrue(sendto_template._v_program,
+        self.assertTrue(template._v_program,
                         'Expected sendto_template to be compiled now.')
 
     def test_02_precooks_instantiated_templates(self):

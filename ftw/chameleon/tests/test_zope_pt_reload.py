@@ -1,4 +1,3 @@
-from App.config import getConfiguration, setConfiguration
 from ftw.chameleon.tests import FunctionalTestCase
 from ftw.testing import IS_PLONE_5
 import os
@@ -38,10 +37,7 @@ class TestZopePageTemplateReloadsCanBeDisabled(FunctionalTestCase):
         # safe, test that Plone 5 disables template reloads in production
 
         def test_reloads_in_debug_mode(self):
-            cfg = getConfiguration()
-            cfg.debug_mode = True
-            setConfiguration(cfg)
-            assert getConfiguration().debug_mode, 'This test requires Plone debug mode ON'
+            self.set_plone5_debug_mode(True)
             self.reload_config()
             view = self.build_view()
             view()
@@ -51,7 +47,7 @@ class TestZopePageTemplateReloadsCanBeDisabled(FunctionalTestCase):
             self.assertTrue(self.events)
 
         def test_no_reloads_in_production_mode(self):
-            assert not getConfiguration().debug_mode, 'This test requires Plone debug mode ON'
+            self.set_plone5_debug_mode(False)
             self.reload_config()
             view = self.build_view()
             view()

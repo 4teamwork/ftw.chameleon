@@ -1,4 +1,7 @@
+from App.config import getConfiguration
+from App.config import setConfiguration
 from ftw.chameleon.testing import CHAMELEON_FUNCTIONAL
+from ftw.testing import IS_PLONE_5
 from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from Products.Five.browser import BrowserView
@@ -30,6 +33,15 @@ class FunctionalTestCase(TestCase):
                 os.environ.pop(name)
 
         self.reload_config()
+
+    def set_plone5_debug_mode(self, set_on):
+        """ Set Plone 5's debug-mode on or off. No-op for Plone 4 """
+        if IS_PLONE_5:
+            cfg = getConfiguration()
+            cfg.debug_mode = set_on
+            setConfiguration(cfg)
+            assert getConfiguration().debug_mode == set_on, \
+                'This test requires debug-mode ' + ('ON' if set_on else 'OFF')
 
     def reload_config(self):
         import chameleon

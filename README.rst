@@ -22,9 +22,11 @@ These options do not work as expected when using `five.pt`_ to integrate
 Enhancements
 =============
 
-- ``zope.pagetemplate`` is patched so that it considers the ``CHAMELEON_RELOAD``
-  configuration: when ``CHAMELEON_RELOAD`` is disabled it does not trigger a
-  recooking of the template even when it has changed.
+- ``zope.pagetemplate`` is patched on Plone 4 so that it considers the
+  ``CHAMELEON_RELOAD`` configuration: when ``CHAMELEON_RELOAD`` is disabled it
+  does not trigger a recooking of the template even when it has changed.
+  ``CHAMELEON_RELOAD`` is not available in Plone 5 as it already patches
+  zope.pagetemplate to not recook templates unless Plone is run in debug mode.
 
 - When ``CHAMELEON_EAGER`` is enabled, all templates will be cooked on startup.
   This is done by explicitly cooking all known templates in a separate thread.
@@ -41,7 +43,7 @@ Enhancements
 Compatibility
 =============
 
-Plone 4.3.x
+Plone 4.3.x and Plone 5.1.x.
 
 
 Installation
@@ -99,7 +101,7 @@ Environment variables
 +-----------------------------------+-------------------------------------------+-------------------------+-----------------------------+
 | ``CHAMELEON_EAGER``               | Parse and compile templates on startup.   | ``true``, ``false``     |``true``                     |
 +-----------------------------------+-------------------------------------------+-------------------------+-----------------------------+
-| ``CHAMELEON_RELOAD``              | Reload templates when they have changed.  | ``true``, ``false``     |  ``false``                  |
+| ``CHAMELEON_RELOAD`` (Plone4 only)| Reload templates when they have changed.  | ``true``, ``false``     |  ``false``                  |
 +-----------------------------------+-------------------------------------------+-------------------------+-----------------------------+
 | ``CHAMELEON_CACHE``               | File system cache.                        | Path to cache directory.| ``.../var/chameleon-cache`` |
 +-----------------------------------+-------------------------------------------+-------------------------+-----------------------------+

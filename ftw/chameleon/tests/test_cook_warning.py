@@ -24,7 +24,7 @@ class TestCookWarning(FunctionalTestCase):
                      "Template '{}/templates/foo.pt' was unexpectedly cooked while"
                      " eager loading is enabled.".format(
                          os.path.dirname(__file__)))
-        log.check(log_entry, log_entry)
+        log.check(log_entry)
 
     def test_no_warning_if_warning_disabled(self):
         os.environ['CHAMELEON_EAGER'] = 'true'
@@ -78,7 +78,7 @@ class TestCookException(FunctionalTestCase):
                      "Template '{}/templates/foo.pt' was unexpectedly cooked while"
                      " eager loading is enabled.".format(
                          os.path.dirname(__file__)))
-        log.check(log_entry, log_entry)
+        log.check(log_entry)
 
     def test_no_exception_if_exception_disabled(self):
         os.environ['CHAMELEON_EAGER'] = 'true'

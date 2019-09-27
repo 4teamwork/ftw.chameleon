@@ -4,9 +4,9 @@
 Introduction
 ============
 
-This package enhances the integration of `Chameleon`_ into Plone with `five.pt`_.
+This package enhances the integration of `Chameleon`_ in Plone with `five.pt`_.
 
-In our deployments we have source checkouts (git) which we are pulled on updates.
+In our deployments we have source checkouts (git) which are pulled on updates.
 This may cause templates to be updated on the next request in running instances,
 which may cause errors because the associated code was not yet reloaded because
 the zope instance was not yet rebooted.
@@ -14,7 +14,7 @@ In order to make that more robust we use `Chameleon`_ with eager-loading enabled
 and auto-reload disabled, so that after an instance is started it will no longer
 read templates.
 
-These options do not work as expected when using `five.pt`_ for integrating
+These options do not work as expected when using `five.pt`_ to integrate
 `Chameleon`_ in combination with ``ViewPageTemplateFile`` instances.
 ``ftw.chameleon`` contains enhancements for making that work well.
 
@@ -31,7 +31,7 @@ Enhancements
 
 - Fire an event when chameleon compiles templates.
 
-- Log warnings or exceptions when templates are compiled unexpectedly.
+- Log warnings or raise exceptions when templates are compiled unexpectedly.
   This helps to pin-point problems with templates which are not cacheable.
 
 - When ``CHAMELEON_EAGER`` is enabled, the templates in ``portal_skins`` will be
@@ -105,7 +105,7 @@ Environment variables
 +-----------------------------------+-------------------------------------------+-------------------------+-----------------------------+
 | ``FTW_CHAMELEON_RECOOK_WARNING``  | Warn when recooking templates.            | ``true``, ``false``     | ``true``                    |
 +-----------------------------------+-------------------------------------------+-------------------------+-----------------------------+
-| ``FTW_CHAMELEON_RECOOK_EXCEPTION``| Exception when recooking templates.       | ``true``, ``false``     | ``true`` when using Sentry. |
+| ``FTW_CHAMELEON_RECOOK_EXCEPTION``| Raise exception when recooking templates. | ``true``, ``false``     | ``true`` when using Sentry. |
 +-----------------------------------+-------------------------------------------+-------------------------+-----------------------------+
 
 See also the `Chameleon documentation <https://chameleon.readthedocs.io/en/latest/configuration.html>`_.

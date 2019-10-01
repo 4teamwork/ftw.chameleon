@@ -1,11 +1,14 @@
+from App.config import getConfiguration
 from ftw.chameleon import config
 from ftw.chameleon import precook
 from ftw.chameleon.exceptions import TemplateCookedUnexpectedly
 from zope.component.hooks import getSite
 import logging
+import pkg_resources
 
 
 LOG = logging.getLogger('ftw.chameleon')
+IS_PLONE_5 = pkg_resources.get_distribution('Products.CMFPlone').version >= '5'
 
 
 def template_compiled(event):
@@ -13,12 +16,13 @@ def template_compiled(event):
         # The warning makes only sense when eager parsing is enabled.
         return
 
-    if config.AUTO_RELOAD:
+    if ((IS_PLONE_5 and getConfiguration().debug_mode) or
+        (not IS_PLONE_5 and config.AUTO_RELOAD)):
         # The warning makes only sense when auto reload is disabled.
         return
 
     if precook.CURRENTLY_PRECOOKING:
-        # Do not spam the log when preecoking voluntarily.
+        # Do not spam the log when precooking voluntarily.
         return
 
     site = getSite()

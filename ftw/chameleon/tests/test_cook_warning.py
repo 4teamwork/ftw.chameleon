@@ -1,3 +1,5 @@
+from ftw.testing import IS_PLONE_5
+
 from ftw.chameleon import precook
 from ftw.chameleon.tests import FunctionalTestCase
 from testfixtures import LogCapture
@@ -10,6 +12,7 @@ class TestCookWarning(FunctionalTestCase):
         super(TestCookWarning, self).setUp()
         precook.SKINS_PRECOOKED_FOR_SITES[:] = [
             '/'.join(self.portal.getPhysicalPath())]
+        self.set_plone5_debug_mode(False)
 
     def test_warning_logged_in_eager_mode(self):
         os.environ['CHAMELEON_EAGER'] = 'true'
@@ -24,7 +27,12 @@ class TestCookWarning(FunctionalTestCase):
                      "Template '{}/templates/foo.pt' was unexpectedly cooked while"
                      " eager loading is enabled.".format(
                          os.path.dirname(__file__)))
-        log.check(log_entry, log_entry)
+
+        if IS_PLONE_5:
+            log.check(log_entry)
+        else:
+            # Double logging seems to be a quirk in Plone 4 that is resolved in Plone 5
+            log.check(log_entry, log_entry)
 
     def test_no_warning_if_warning_disabled(self):
         os.environ['CHAMELEON_EAGER'] = 'true'
@@ -49,6 +57,7 @@ class TestCookWarning(FunctionalTestCase):
     def test_no_warning_logged_in_auto_reload_mode(self):
         os.environ['CHAMELEON_EAGER'] = 'true'
         os.environ['CHAMELEON_RELOAD'] = 'true'
+        self.set_plone5_debug_mode(True)
         os.environ['FTW_CHAMELEON_RECOOK_WARNING'] = 'true'
         self.reload_config()
 
@@ -78,7 +87,12 @@ class TestCookException(FunctionalTestCase):
                      "Template '{}/templates/foo.pt' was unexpectedly cooked while"
                      " eager loading is enabled.".format(
                          os.path.dirname(__file__)))
-        log.check(log_entry, log_entry)
+
+        if IS_PLONE_5:
+            log.check(log_entry)
+        else:
+            # Double logging seems to be a quirk in Plone 4 that is resolved in Plone 5
+            log.check(log_entry, log_entry)
 
     def test_no_exception_if_exception_disabled(self):
         os.environ['CHAMELEON_EAGER'] = 'true'
@@ -103,6 +117,7 @@ class TestCookException(FunctionalTestCase):
     def test_no_exception_logged_in_auto_reload_mode(self):
         os.environ['CHAMELEON_EAGER'] = 'true'
         os.environ['CHAMELEON_RELOAD'] = 'true'
+        self.set_plone5_debug_mode(True)
         os.environ['FTW_CHAMELEON_RECOOK_EXCEPTION'] = 'true'
         self.reload_config()
 

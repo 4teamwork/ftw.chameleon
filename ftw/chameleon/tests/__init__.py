@@ -6,7 +6,7 @@ from plone.app.testing import setRoles
 from plone.app.testing import TEST_USER_ID
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from unittest2 import TestCase
+from unittest import TestCase
 import os
 import transaction
 

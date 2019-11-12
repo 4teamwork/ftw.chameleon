@@ -1,5 +1,5 @@
 from ftw.chameleon.utils import get_subclasses
-from unittest2 import TestCase
+from unittest import TestCase
 
 
 class TestGetSubclasses(TestCase):
